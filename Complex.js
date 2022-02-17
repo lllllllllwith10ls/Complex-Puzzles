@@ -13,6 +13,7 @@ const enumCycles = {
 }
 
 const cols = ['#008800', '#000088', '#880000', '#bbbb00'];
+const sqrt3 = Math.sqrt(3);
 
 const permute = (arr, order, ccw = false) => {
     const newArr = Array(arr.length);
@@ -56,7 +57,6 @@ function drawTriangle(ctx, col, centreX, centreY, rad, angle, circle = false) {
 }
 
 function subInTri(x, y) {
-    const sqrt3 = Math.sqrt(3);
     if (y > (3 - sqrt3 * Math.abs(2 * x - sqrt3)) / 2) {
         return null;
     } else if (y > 0.75) {
@@ -72,23 +72,27 @@ class Piece {
     ctx;
     position = [0,1,2,3]; // F BR BL D
     moves = [];
-
+    
     constructor(moves) {
         this.moves = moves;
     }
-
+    
     move(moveIndex, ccw = false) {
         if (this.moves[moveIndex]) {
             this.position = permute(this.position, enumCycles[moveIndex], ccw);
             this.moves = permute(this.moves, enumCycles[moveIndex], ccw);
         }
     }
-
+    
     draw(ctx, cols, x, y, size) {
         ctx.translate(x, y);
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 2;
+        ctx.fillStyle = this.isSolved() ? '#005500' : '#333333';
+        ctx.strokeRect((-sqrt3 * size) / 2, -size / 2, sqrt3 * size, (3 * size) / 2);
+        ctx.fillRect((-sqrt3 * size) / 2, -size / 2, sqrt3 * size, (3 * size) / 2);
         const smallRad = size / 2;
         const angle = Math.PI / 6;
-        ctx.strokeStyle = "#666666";
         drawTriangle(ctx, cols[this.position[0]], 0, 0, smallRad, Math.PI - angle, this.moves[0]);
         drawTriangle(ctx, cols[this.position[3]], 0, smallRad, smallRad, -angle, this.moves[3]);
         drawTriangle(ctx, cols[this.position[1]], ...pointOnCircle(smallRad, -angle), smallRad, -angle, this.moves[1]);
@@ -96,7 +100,7 @@ class Piece {
         ctx.stroke();
         ctx.translate(-x, -y);
     }
-
+    
     isSolved() {
         return this.position.every((v,i,a) => !i || a[i-1] <= v);
     }
@@ -106,7 +110,7 @@ function getSizes(canvas) {
     const size = canvas.height / 6
     return {
         size,
-        spacingX: Math.sqrt(3) * size,
+        spacingX: sqrt3 * size,
         spacingY: 3 * size / 2,
     }
 }
@@ -138,7 +142,6 @@ function initialise() {
     const canvasTop = canvas.offsetTop + canvas.clientTop;
     const ctx = canvas.getContext('2d');
     const { size, spacingX, spacingY } = getSizes(canvas);
-    //ctx.translate(canvas.width/2, canvas.height/2);
     canvas.addEventListener('mousedown', function(event) {
         event.preventDefault();
         var clickX = event.pageX - canvasLeft, clickY = event.pageY - canvasTop;
@@ -151,9 +154,6 @@ function initialise() {
             pieces.forEach(x => x.move(subTri, event.button === 0));
             update();
         }
-        // console.log(gridX, gridY);
-        // console.log(subTri);
-        // console.log(event.button);
     });
     
     reset();
@@ -164,8 +164,6 @@ function display() {
     const ctx = canvas.getContext('2d');
     const { size, spacingX, spacingY } = getSizes(canvas);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = pieces.every(x => x.isSolved()) ? '#005500' : '#333333';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.translate(spacingX / 2, size / 2);
     for (let i = 0; i < 16; ++i) {
         pieces[i].draw(ctx, cols, (3 - i % 4) * spacingX, (3 - (i >> 2) % 4) * spacingY, size);
