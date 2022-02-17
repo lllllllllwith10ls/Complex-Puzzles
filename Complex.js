@@ -119,7 +119,9 @@ const pieces = Array(16);
 
 function scramble() {
     for(let i = 0; i < 100; ++i) {
-        pieces.forEach(x => x.move(Math.floor(Math.random() * 4), Math.random() > 0.5));
+        const move = Math.floor(Math.random() * 4);
+        const dir = Math.random() > 0.5;
+        pieces.forEach(x => x.move(move, dir));
     }
     update();
 }
