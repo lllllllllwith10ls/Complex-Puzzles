@@ -1,7 +1,10 @@
 <html>
 	<head>
 		<title>Complex</title>
-		<script src="Complex.js"></script>
+		<script src="Drawing.js"></script>
+		<script src="Tetrahedron.js"></script>
+		<script src="TriPrism.js"></script>
+		<script src="Main.js"></script>
 	</head>
 	<body>
 		<div>
@@ -14,9 +17,14 @@
             <button onClick="reset()">
                 Reset
             </button>
+			<label for="puzzle-type">Puzzle Type:</label>
+			<select name="puzzle-type" id="puzzle-type" onChange="createPuzzle()">
+				<option value="Tetrahedron">Tetrahedron</option>
+				<option value="TriPrism">Triangular Prism</option>
+			</select>
 		</div>
 		<div>
-			<canvas id="canvas" width="700" height="600" style="border:0px solid #000000;" oncontextmenu="return false"></canvas>
+			<canvas id="canvas" width="1200" height="600" style="border:0px solid #000000;" oncontextmenu="return false"></canvas>
 		</div>
 	</body>
 </html>
