@@ -76,14 +76,14 @@ function initialise() {
     const canvasLeft = canvas.offsetLeft + canvas.clientLeft;
     const canvasTop = canvas.offsetTop + canvas.clientTop;
     const ctx = canvas.getContext('2d');
-    const { size, spacingX, spacingY } = puzzle.getSizes(canvas);
     canvas.addEventListener('mousedown', function(event) {
-        event.preventDefault();
+        const { size, spacingX, spacingY } = puzzle.getSizes(canvas);
         var clickX = event.pageX - canvasLeft, clickY = event.pageY - canvasTop;
         var gridX = Math.floor(clickX / spacingX), gridY = Math.floor(clickY / spacingY);
         var subX = (clickX % spacingX) / size, subY = (clickY % spacingY) / size;
 
         var subPiece = puzzle.subInPiece(subX, subY);
+        console.log(subX, subY, subPiece);
 
         if (subPiece !== null) {
             puzzle.move(subPiece, event.button === 0);
