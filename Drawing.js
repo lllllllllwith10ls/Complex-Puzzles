@@ -2,7 +2,7 @@ function pointOnCircle(rad, angle) {
     return [rad * Math.cos(angle), rad * Math.sin(angle)];
 }
 
-function drawTriangle(ctx, col, centreX, centreY, rad, angle, circle = false) {
+function drawTriangle(ctx, col, centreX, centreY, rad, angle, circle = false, circleCol = '#000') {
     const points = [
         pointOnCircle(rad, angle), 
         pointOnCircle(rad, angle + 2 * Math.PI / 3), 
@@ -19,7 +19,7 @@ function drawTriangle(ctx, col, centreX, centreY, rad, angle, circle = false) {
     ctx.stroke();
     if (circle) {
         const cRad = rad / 4
-        ctx.fillStyle = '#000';
+        ctx.fillStyle = circleCol;
         ctx.beginPath();
         ctx.moveTo(cRad, 0);
         ctx.arc(0, 0, cRad, 0, 2 * Math.PI);

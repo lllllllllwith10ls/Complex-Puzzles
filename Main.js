@@ -1,16 +1,19 @@
 const enumPuzzleType = {
     Tetrahedron: 0,
     TriPrism: 1,
+    TriplexTet: 2,
 }
 
 const enumPuzzleSize = {
     [enumPuzzleType.Tetrahedron]: 4,
     [enumPuzzleType.TriPrism]: 5,
+    [enumPuzzleType.TriplexTet]: 4,
 }
 
 const enumPuzzlePieceType = {
     [enumPuzzleType.Tetrahedron]: TetPiece,
     [enumPuzzleType.TriPrism]: TriPrismPiece,
+    [enumPuzzleType.TriplexTet]: TriplexTetPiece,
 }
 
 class Puzzle {
@@ -38,7 +41,7 @@ class Puzzle {
     }
 
     reset() {
-        for (let i = 0; i < 1 << enumPuzzleSize[this.puzzleType]; ++i) {
+        for (let i = 0; i < this.getPieceCount(); ++i) {
             this.pieces[i] = new this.pieceType(i);
         }
     }
@@ -49,6 +52,10 @@ class Puzzle {
     
     getSizes(canvas) {
         return this.pieceType.getSizes(canvas);
+    }
+
+    getPieceCount() {
+        return this.pieceType.getPieceCount();
     }
 
     isSolved() {
@@ -103,16 +110,13 @@ function createPuzzle() {
 function update() {
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
-    const { size, spacingX, spacingY, offsetX, offsetY } = puzzle.getSizes(canvas);
+    const { gridX, size, spacingX, spacingY, offsetX, offsetY } = puzzle.getSizes(canvas);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.translate(offsetX, offsetY);
-    const gridSize = enumPuzzleSize[puzzle.puzzleType];
-    const gridX = Math.ceil(gridSize / 2);
-    const gridY = gridSize - gridX;
-    for (let i = 0; i < 1 << enumPuzzleSize[puzzle.puzzleType]; ++i) {
+    for (let i = 0; i < puzzle.getPieceCount(); ++i) {
         puzzle.pieces[i].draw(ctx, cols, 
-            ((1 << gridX) - 1 - i % (1 << gridX)) * spacingX, 
-            ((1 << gridY) - 1 - (i >> gridX) % (1 << gridY)) * spacingY, 
+            (i % gridX) * spacingX, 
+            Math.floor(i / gridX ) * spacingY, 
             size);
     }
     ctx.translate(-offsetX, -offsetY);

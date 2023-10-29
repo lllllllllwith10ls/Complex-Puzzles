@@ -11,11 +11,11 @@ class TriPrismPiece {
 
     constructor(moveNum) {
         this.moves = [
-            moveNum % 2 === 0,
-            (moveNum >> 1) % 2 === 0,
-            (moveNum >> 2) % 2 === 0,
-            (moveNum >> 3) % 2 === 0,
-            (moveNum >> 4) % 2 === 0,
+            moveNum % 2 === 1,
+            (moveNum >> 1) % 2 === 1,
+            (moveNum >> 2) % 2 === 1,
+            (moveNum >> 3) % 2 === 1,
+            (moveNum >> 4) % 2 === 1,
         ]
     }
     
@@ -71,15 +71,21 @@ class TriPrismPiece {
     }
 
     static getSizes(canvas) {
-        const size = canvas.height / 12;
+        const gridX = 1<<3;
+        const size = canvas.height / (3 * gridX);
         const spacingX = 3 * size;
         const spacingY = size * (1 + sqrt3)
         return {
+            gridX,
             size,
             spacingX,
             spacingY,
             offsetX: spacingX / 2,
             offsetY: spacingY / 2,
         }
+    }
+
+    static getPieceCount() {
+        return 1<<5;
     }
 }
