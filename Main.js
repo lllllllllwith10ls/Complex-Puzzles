@@ -2,18 +2,21 @@ const enumPuzzleType = {
     Tetrahedron: 0,
     TriPrism: 1,
     TriplexTet: 2,
+    SquareK5: 3,
 }
 
 const enumPuzzleSize = {
     [enumPuzzleType.Tetrahedron]: 4,
     [enumPuzzleType.TriPrism]: 5,
     [enumPuzzleType.TriplexTet]: 4,
+    [enumPuzzleType.SquareK5]: 5,
 }
 
 const enumPuzzlePieceType = {
     [enumPuzzleType.Tetrahedron]: TetPiece,
     [enumPuzzleType.TriPrism]: TriPrismPiece,
     [enumPuzzleType.TriplexTet]: TriplexTetPiece,
+    [enumPuzzleType.SquareK5]: SquareK5Piece,
 }
 
 class Puzzle {
