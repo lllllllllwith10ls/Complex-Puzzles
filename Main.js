@@ -23,16 +23,20 @@ class Puzzle {
     pieces;
     puzzleType;
     pieceType;
+    undoStack;
+    redoStack;
 
     constructor(type) {
         this.puzzleType = enumPuzzleType[type];
         this.pieceType = enumPuzzlePieceType[this.puzzleType];
-        this.pieces = Array(enumPuzzleSize[this.puzzleType])
+        this.pieces = Array(enumPuzzleSize[this.puzzleType]);
         this.reset();
     }
 
     move(move, dir = false) {
         this.pieces.forEach(x => x.move(move, dir));
+        this.undoStack.push([move,dir]);
+        this.redoStack = [];
     }
 
     scramble(n = 100) {
@@ -46,6 +50,25 @@ class Puzzle {
     reset() {
         for (let i = 0; i < this.getPieceCount(); ++i) {
             this.pieces[i] = new this.pieceType(i);
+        }
+        this.undoStack = [];
+        this.redoStack = [];
+    }
+
+    undo() {
+        if (this.undoStack.length > 0) {
+            let m = this.undoStack.pop();
+            this.pieces.forEach(x => x.move(m[0], !m[1]));
+            this.redoStack.push(m);
+        }
+    }
+    
+    redo() {
+        console.log(this.redoStack);
+        if (this.redoStack.length > 0) {
+            let m = this.redoStack.pop();
+            this.pieces.forEach(x => x.move(m[0], m[1]));
+            this.undoStack.push(m);
         }
     }
 
@@ -93,13 +116,23 @@ function initialise() {
         var subX = (clickX % spacingX) / size, subY = (clickY % spacingY) / size;
 
         var subPiece = puzzle.subInPiece(subX, subY);
-        console.log(subX, subY, subPiece);
+        //console.log(subX, subY, subPiece);
 
         if (subPiece !== null) {
             puzzle.move(subPiece, event.button === 0);
             update();
         }
     });
+    document.addEventListener('keydown', function(event) {
+        if (event.ctrlKey && event.code === 'KeyZ') {
+            if (event.shiftKey) {
+                puzzle.redo()
+            } else {
+                puzzle.undo();
+            }
+            update();
+        };
+    }, false);
     
     createPuzzle();
 }
