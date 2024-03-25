@@ -3,6 +3,7 @@ const enumPuzzleType = {
     TriPrism: 1,
     TriplexTet: 2,
     SquareK5: 3,
+    Tri7T3: 4,
 }
 
 const enumPuzzleSize = {
@@ -10,6 +11,7 @@ const enumPuzzleSize = {
     [enumPuzzleType.TriPrism]: 5,
     [enumPuzzleType.TriplexTet]: 4,
     [enumPuzzleType.SquareK5]: 5,
+    [enumPuzzleType.Tri7T3]: 7,
 }
 
 const enumPuzzlePieceType = {
@@ -17,6 +19,7 @@ const enumPuzzlePieceType = {
     [enumPuzzleType.TriPrism]: TriPrismPiece,
     [enumPuzzleType.TriplexTet]: TriplexTetPiece,
     [enumPuzzleType.SquareK5]: SquareK5Piece,
+    [enumPuzzleType.Tri7T3]: Tri7T3Piece,
 }
 
 class Puzzle {
@@ -102,7 +105,7 @@ const permute = (arr, order, ccw = false) => {
 }
 
 let puzzle = new Puzzle('Tetrahedron');
-const cols = ['#008800', '#000088', '#880000', '#bbbb00', '#bbbbbb'];
+const cols = ['#008800', '#000088', '#880000', '#bbbb00', '#bbbbbb', '#00bbbb', '#bb00bb'];
 
 function initialise() {
     const canvas = document.getElementById('canvas');
@@ -110,18 +113,21 @@ function initialise() {
     const canvasTop = canvas.offsetTop + canvas.clientTop;
     const ctx = canvas.getContext('2d');
     canvas.addEventListener('mousedown', function(event) {
-        const { size, spacingX, spacingY } = puzzle.getSizes(canvas);
+        const { gridX, size, spacingX, spacingY } = puzzle.getSizes(canvas);
         var clickX = event.pageX - canvasLeft, clickY = event.pageY - canvasTop;
-        var gridX = Math.floor(clickX / spacingX), gridY = Math.floor(clickY / spacingY);
+        var clickGridX = Math.floor(clickX / spacingX), clickGridY = Math.floor(clickY / spacingY);
         var subX = (clickX % spacingX) / size, subY = (clickY % spacingY) / size;
+        if (clickGridX < gridX & clickGridY < (puzzle.getPieceCount()/gridX)) {
 
-        var subPiece = puzzle.subInPiece(subX, subY);
-        //console.log(subX, subY, subPiece);
-
-        if (subPiece !== null) {
-            puzzle.move(subPiece, event.button === 0);
-            update();
+            var subPiece = puzzle.subInPiece(subX, subY);
+            //console.log(subX, subY, subPiece);
+    
+            if (subPiece !== null) {
+                puzzle.move(subPiece, event.button === 0);
+                update();
+            }
         }
+
     });
     document.addEventListener('keydown', function(event) {
         if (event.ctrlKey && event.code === 'KeyZ') {
