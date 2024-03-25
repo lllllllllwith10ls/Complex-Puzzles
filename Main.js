@@ -137,6 +137,9 @@ function initialise() {
                 puzzle.undo();
             }
             update();
+        } else if (event.ctrlKey && event.code === 'KeyY') {
+            puzzle.redo()
+            update();
         };
     }, false);
     
