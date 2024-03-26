@@ -58,7 +58,6 @@ class HemiDodecPiece {
         const cY = (1+2*Math.cos(Math.PI/5));
         const bigR = 2*Math.sin(Math.PI/5);
         const iRad = Math.cos(Math.PI/5);
-        Math.atan2();
         function inPent(x,y,cx,cy) {
             let tx = x-cx;
             let ty = y-cy;
@@ -77,12 +76,11 @@ class HemiDodecPiece {
         } else if (inPent(x-cX,y-cY,...pointOnCircle(bigR,11*Math.PI/10))) {
             return 5;
         }
-        // *Math.cos((Math.atan2(ty,tx) + 2*Math.PI) % (2*Math.PI/5))
     }
 
     static getSizes(canvas) {
         const gridX = 1<<3;
-        const size = canvas.width / (2 * (Math.sin(2*Math.PI/5) * 4 + 2 * Math.sin(Math.PI/5)) * Math.sin(Math.PI/5) * gridX);
+        const size = canvas.width / ((Math.sin(2*Math.PI/5) * 4 + 2 * Math.sin(Math.PI/5)) * gridX);
         const spacingX = size * (Math.sin(2*Math.PI/5) * 4 + 2 * Math.sin(Math.PI/5));
         const spacingY = size * (1+2*Math.cos(Math.PI/5)) * (1+Math.cos(Math.PI/5));
         return {
