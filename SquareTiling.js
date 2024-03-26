@@ -72,7 +72,7 @@ class SquareK5Piece {
         const gridX = 1<<3;
         const size = canvas.height / (3 * gridX);
         const spacingX = 3 * size;
-        const spacingY = 3 * size
+        const spacingY = 3 * size;
         return {
             gridX,
             size,

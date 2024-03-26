@@ -4,6 +4,7 @@ const enumPuzzleType = {
     TriplexTet: 2,
     SquareK5: 3,
     Tri7T3: 4,
+    HemiDodec: 5,
 }
 
 const enumPuzzleSize = {
@@ -12,6 +13,7 @@ const enumPuzzleSize = {
     [enumPuzzleType.TriplexTet]: 4,
     [enumPuzzleType.SquareK5]: 5,
     [enumPuzzleType.Tri7T3]: 7,
+    [enumPuzzleType.HemiDodec]: 6,
 }
 
 const enumPuzzlePieceType = {
@@ -20,6 +22,7 @@ const enumPuzzlePieceType = {
     [enumPuzzleType.TriplexTet]: TriplexTetPiece,
     [enumPuzzleType.SquareK5]: SquareK5Piece,
     [enumPuzzleType.Tri7T3]: Tri7T3Piece,
+    [enumPuzzleType.HemiDodec]: HemiDodecPiece,
 }
 
 class Puzzle {
@@ -120,7 +123,7 @@ function initialise() {
         if (clickGridX < gridX & clickGridY < (puzzle.getPieceCount()/gridX)) {
 
             var subPiece = puzzle.subInPiece(subX, subY);
-            //console.log(subX, subY, subPiece);
+            // console.log(subX, subY, subPiece);
     
             if (subPiece !== null) {
                 puzzle.move(subPiece, event.button === 0);
