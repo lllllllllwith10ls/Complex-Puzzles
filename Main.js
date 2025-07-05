@@ -5,6 +5,10 @@ const enumPuzzleType = {
     SquareK5: 3,
     Tri7T3: 4,
     HemiDodec: 5,
+    Cube: 6,
+    ComplexCube: 7,
+    Tesseract: 8,
+    ComplexTes: 9,
 }
 
 const enumPuzzleSize = {
@@ -14,6 +18,10 @@ const enumPuzzleSize = {
     [enumPuzzleType.SquareK5]: 5,
     [enumPuzzleType.Tri7T3]: 7,
     [enumPuzzleType.HemiDodec]: 6,
+    [enumPuzzleType.Cube]: 6,
+    [enumPuzzleType.ComplexCube]: 6,
+    [enumPuzzleType.Tesseract]: 64,
+    [enumPuzzleType.ComplexTes]: 64,
 }
 
 const enumPuzzlePieceType = {
@@ -23,6 +31,10 @@ const enumPuzzlePieceType = {
     [enumPuzzleType.SquareK5]: SquareK5Piece,
     [enumPuzzleType.Tri7T3]: Tri7T3Piece,
     [enumPuzzleType.HemiDodec]: HemiDodecPiece,
+    [enumPuzzleType.Cube]: CubePiece,
+    [enumPuzzleType.ComplexCube]: ComplexCubePiece,
+    [enumPuzzleType.Tesseract]: TesPiece,
+    [enumPuzzleType.ComplexTes]: ComplexTesPiece,
 }
 
 class Puzzle {
@@ -108,7 +120,7 @@ const permute = (arr, order, ccw = false) => {
 }
 
 let puzzle = new Puzzle('Tetrahedron');
-const cols = ['#008800', '#000088', '#880000', '#bbbb00', '#bbbbbb', '#00bbbb', '#bb00bb'];
+const cols = ['#008800', '#000088', '#880000', '#bbbb00', '#bbbbbb', '#00bbbb', '#bb00bb', '#bb8800'];
 
 function initialise() {
     const canvas = document.getElementById('canvas');

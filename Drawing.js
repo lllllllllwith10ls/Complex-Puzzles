@@ -39,6 +39,7 @@ function drawSquare(ctx, col, centreX, centreY, edge, angle, circle = false, cir
     if (circle) {
         const cRad = edge / (4 * sqrt3);
         ctx.fillStyle = circleCol;
+        ctx.strokeStyle = '#000';
         ctx.beginPath();
         ctx.moveTo(cRad, 0);
         ctx.arc(0, 0, cRad, 0, 2 * Math.PI);
